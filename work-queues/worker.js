@@ -5,7 +5,7 @@ const amqpInstance = require('../client/amqp').default;
     const channel = await client.createChannel()
     const queue = "work-queues"
     const msg = "cek"
-    let n = 1
+    var n = 1
     await channel.assertQueue(queue, {
         durable : true // if true, message in queue wont be lost if server dies
     })
