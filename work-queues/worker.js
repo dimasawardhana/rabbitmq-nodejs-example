@@ -5,13 +5,15 @@ const amqpInstance = require('../client/amqp').default;
     const channel = await client.createChannel()
     const queue = "work-queues"
     const msg = "cek"
+    let n = 1
     await channel.assertQueue(queue, {
-        durable : true
+        durable : true // if true, message in queue wont be lost if server dies
     })
     console.log("Ready to receive message");
+    channel.prefetch(n); // will accept only n message in the worker.
     channel.consume(queue, function(msg) {
         console.log(" [x] Received %s", msg.content.toString());
       }, {
-          noAck: true
+          noAck: true // true if it need not acknowledgement message
         });
 })()

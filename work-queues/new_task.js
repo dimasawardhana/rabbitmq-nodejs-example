@@ -8,7 +8,7 @@ const amqpInstance = require('../client/amqp').default;
         durable : true
     })
     await channel.sendToQueue(queue, Buffer.from(msg), {
-        persistent: true
+        persistent: true // message will be saved in disk also if true
     })
     console.log("send new task")
     await channel.close()
