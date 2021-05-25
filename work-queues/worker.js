@@ -3,11 +3,12 @@ const amqpInstance = require('../client/amqp').default;
 (async ()=>{
     const client = await amqpInstance()
     const channel = await client.createChannel()
-    const queue = "prod-cons"
+    const queue = "work-queues"
     const msg = "cek"
     await channel.assertQueue(queue, {
-        durable : false
+        durable : true
     })
+    console.log("Ready to receive message");
     channel.consume(queue, function(msg) {
         console.log(" [x] Received %s", msg.content.toString());
       }, {

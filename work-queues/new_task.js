@@ -1,15 +1,16 @@
 const amqpInstance = require('../client/amqp').default;
-
 (async ()=>{
     const client = await amqpInstance()
     const channel = await client.createChannel()
-    const queue = "prod-cons"
-    const msg = "cek"
+    const queue = "work-queues"
+    const msg = process.argv.slice(2).join(" ") ||"cek"
     channel.assertQueue(queue, {
-        durable : false
+        durable : true
     })
-    await channel.sendToQueue(queue, Buffer.from(msg))
-    console.log("send cek produce")
+    await channel.sendToQueue(queue, Buffer.from(msg), {
+        persistent: true
+    })
+    console.log("send new task")
     await channel.close()
     client.close()
     process.exit(0)
